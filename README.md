@@ -34,14 +34,19 @@ I know later I do have to do a writeup so here I'll track some thoughts as I go 
 - For the related events I'll just have it open the other card
 - I could've probably also made like a pill label component but I that could be for later
 - I mimicked the card layout and just removed line clamps, since that's all they really need.
-4. Blah blah blah
+4. I still don't want to start doing login stuff, and I think starting a filtering system would be a good idea since I can easily later just add a if event.private check to the filter.
+- I'll start with a simple search bar, that can search some of the bigger length text properties like title/descrip
+- After I'll add some for the more boolean/date properties
+- On second thought users should also be able to directly filter by some categories and permissions
+- I should also add a reset button just in case users get lost and just wanna see every event in default order again (start time).
+- Looking at the final inspiration things I think I could also just shove the filter stuff into localStorage
 
 ## Requirements
 
 The functionality of the app is split into multiple portions:
 
 1. DONE Display the information for all events provided when visiting the app
-2. Sort these events in order by start_time
+2. DONE Sort these events in order by start_time
 3. Hide the ability to view `private` events behind a login screen. Specifically, users who haven't logged in can only view `public` events, while logged in users can view both `public` and `private` events
     - Login details can be hard-coded, please use the following credentials if you are hard-coding the login:
         - Username: `hacker`
@@ -55,6 +60,6 @@ If you have completed your implementation of the above points, you may want to c
 
 **Some possibilities, for your inspiration:**
 
-- Allowing the user to search for a specific event
-- Add the ability to filter based on the event type
-- Add the ability to re-order events and persist the order of events across refreshes
+- DONE Allowing the user to search for a specific event
+- DONE Add the ability to filter based on the event type
+- DONE Add the ability to re-order events and persist the order of events across refreshes
