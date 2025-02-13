@@ -29,12 +29,18 @@ I know later I do have to do a writeup so here I'll track some thoughts as I go 
 - Add little tags indicating what type of event it is
 - Add both kinds of links for now, we can deal with hiding it later
 - Also add the workshop leaders
+3. Now that I have presentable cards lets add a little more functionality, I honestly think this is the bulk of the project, so I'll spend a bit more time on this, and then look to add some of the other features recommended.
+- Clicking on cards, I think the cards look really cool and honestly would expect clicking on them to do something, so lets add that using a modal, this also allows us to make use of the related events
+- For the related events I'll just have it open the other card
+- I could've probably also made like a pill label component but I that could be for later
+- I mimicked the card layout and just removed line clamps, since that's all they really need.
+4. Blah blah blah
 
 ## Requirements
 
 The functionality of the app is split into multiple portions:
 
-1. Display the information for all events provided when visiting the app
+1. DONE Display the information for all events provided when visiting the app
 2. Sort these events in order by start_time
 3. Hide the ability to view `private` events behind a login screen. Specifically, users who haven't logged in can only view `public` events, while logged in users can view both `public` and `private` events
     - Login details can be hard-coded, please use the following credentials if you are hard-coding the login:
