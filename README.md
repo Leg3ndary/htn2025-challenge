@@ -23,6 +23,12 @@ I know later I do have to do a writeup so here I'll track some thoughts as I go 
 - I'm going to use axios and framer-motion so I'll start installing those as well.
 - Actually, I think it might be better to first pull in all events and display them instead of using static data, I'll have to do it later anyways.
 2. I now have all the basic data and some pretty ugly cards, let's make it look better.
+- Let's add some icons using lucide react
+- Also add dates, title, description, etc
+- Add some light colours for each event
+- Add little tags indicating what type of event it is
+- Add both kinds of links for now, we can deal with hiding it later
+- Also add the workshop leaders
 
 ## Requirements
 
