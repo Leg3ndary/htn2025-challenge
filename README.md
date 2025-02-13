@@ -21,6 +21,7 @@ I know later I do have to do a writeup so here I'll track some thoughts as I go 
 - I want to start with static cards and just overall design while not worrying about filling it with data. That can come later.
 - I want to use a grid layout for the cards, I don't think I need to implement an actual calendar thing since nothing in the requirements actually says that so I'll start with something easier and move on if I have the time.
 - I'm going to use axios and framer-motion so I'll start installing those as well.
+- Actually, I think it might be better to first pull in all events and display them instead of using static data, I'll have to do it later anyways.
 
 ## Requirements
 
