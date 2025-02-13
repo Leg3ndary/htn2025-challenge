@@ -17,10 +17,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="">
-      {events.map((event: TEvent) => (
-        <EventCard event={event} />
-      ))}
+    <div className="p-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
+        {events.map((event: TEvent) => (
+          <EventCard event={event} />
+        ))}
+      </div>
     </div>
   );
 }
