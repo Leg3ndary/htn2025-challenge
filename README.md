@@ -41,6 +41,9 @@ I know later I do have to do a writeup so here I'll track some thoughts as I go 
 - I should also add a reset button just in case users get lost and just wanna see every event in default order again (start time).
 - Looking at the final inspiration things I think I could also just shove the filter stuff into localStorage
 5. Todays technically my final day so before I get started on the final stuff I did some quick touchups
+- Starting with authentication I added a really simple sign in sign out button that just quickly checks if the input matches and sets a field in local storage...
+- I probably should useContext for the auth stuff but I'm running out of time so I'll just pass it in as props...
+
 
 
 ## Requirements

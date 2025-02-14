@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 interface FilterBarProps {
   events: TEvent[];
   onFilterChange: (filteredEvents: TEvent[]) => void;
+  isAuthenticated: boolean;
 }
 
 type SortField = "name" | "start_time" | "event_type";
@@ -51,7 +52,7 @@ const defaultState: FilterState = {
   showPrivate: null,
 };
 
-export function FilterBar({ events, onFilterChange }: FilterBarProps) {
+export function FilterBar({ events, onFilterChange, isAuthenticated }: FilterBarProps) {
   const [searchTerm, setSearchTerm] = useState(defaultState.searchTerm);
   const [eventType, setEventType] = useState<TEventType | "all">(defaultState.eventType);
   const [sortField, setSortField] = useState<SortField>(defaultState.sortField);
@@ -171,8 +172,12 @@ export function FilterBar({ events, onFilterChange }: FilterBarProps) {
       return sortDirection === "asc" ? comparison : -comparison;
     });
 
+    if (!isAuthenticated) {
+      filtered = filtered.filter((event) => event.permission === "public");
+    }
+
     onFilterChange(filtered);
-  }, [events, searchTerm, eventType, sortField, sortDirection, showPrivate]);
+  }, [events, searchTerm, eventType, sortField, sortDirection, showPrivate, isAuthenticated]);
 
   return (
     <div className="mb-8 space-y-4 flex flex-col w-full px-4 max-w-[50rem]">

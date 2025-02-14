@@ -27,9 +27,11 @@ function FunnyDivider() {
 export default function EventCard({
   event,
   allEvents,
+  isAuthenticated,
 }: {
   event: TEvent;
   allEvents: TEvent[];
+  isAuthenticated: boolean;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalEvent, setModalEvent] = useState(event);
@@ -63,7 +65,9 @@ export default function EventCard({
           setModalEvent(event);
           setIsModalOpen(true);
         }}
-        className={`bg-[#1f1f1f] rounded-xl p-5 h-full min-h-64 flex flex-col border border-[#1f1f1f] ${TEventColors[event.event_type].split(" ")[2]} transition-colors cursor-pointer`}
+        className={`bg-[#1f1f1f] rounded-xl p-5 h-full min-h-64 flex flex-col border border-[#1f1f1f] ${
+          TEventColors[event.event_type].split(" ")[2]
+        } transition-colors cursor-pointer`}
       >
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -108,16 +112,17 @@ export default function EventCard({
                   Public
                 </a>
               )}
-              <a
-                href={event.private_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 text-sm text-purple-400 hover:text-purple-300 transition-colors"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <ExternalLink size={16} />
-                Private
-              </a>
+              {isAuthenticated && event.private_url && (
+                <a
+                  href={event.private_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 text-sm text-purple-400 hover:text-purple-300 transition-colors"
+                >
+                  <ExternalLink size={16} />
+                  Private Link
+                </a>
+              )}
             </div>
           </div>
           <div className="flex justify-between text-gray-300">
@@ -145,6 +150,7 @@ export default function EventCard({
         onClose={() => setIsModalOpen(false)}
         allEvents={allEvents}
         onEventChange={handleEventChange}
+        isAuthenticated={isAuthenticated}
       />
     </>
   );

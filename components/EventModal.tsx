@@ -10,6 +10,7 @@ interface EventModalProps {
   onClose: () => void;
   allEvents: TEvent[];
   onEventChange: (newEvent: TEvent) => void;
+  isAuthenticated: boolean;
 }
 
 export default function EventModal({
@@ -18,6 +19,7 @@ export default function EventModal({
   onClose,
   allEvents,
   onEventChange,
+  isAuthenticated
 }: EventModalProps) {
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
@@ -50,7 +52,11 @@ export default function EventModal({
 
   const relatedEvents = event.related_events
     .map((id) => allEvents.find((e) => e.id === id))
-    .filter((e) => e !== undefined) as TEvent[];
+    .filter(
+      (e) =>
+        e !== undefined &&
+        (isAuthenticated || !e.permission || e.permission !== "private")
+    ) as TEvent[];
 
   const handleRelatedEventClick = (relatedEvent: TEvent) => {
     onEventChange(relatedEvent);
