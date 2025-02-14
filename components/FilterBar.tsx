@@ -175,9 +175,9 @@ export function FilterBar({ events, onFilterChange }: FilterBarProps) {
   }, [events, searchTerm, eventType, sortField, sortDirection, showPrivate]);
 
   return (
-    <div className="mb-8 space-y-4 flex flex-col">
+    <div className="mb-8 space-y-4 flex flex-col w-full px-4 max-w-[50rem]">
       <div className="flex flex-wrap gap-4">
-        <div className="relative flex-grow min-w-4xl">
+        <div className="relative flex-grow w-full md:w-[40%]">
           <Search
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             size={20}
@@ -293,7 +293,8 @@ export function FilterBar({ events, onFilterChange }: FilterBarProps) {
       <div className="flex gap-2 items-center justify-center">
         <div className="flex gap-4 items-center">
           <div className="text-sm text-gray-400">Sort by:</div>
-          <div className="flex gap-2">
+          <motion.div className="flex gap-2"
+          >
             {[
               { field: "name" as SortField, label: "Name" },
               { field: "start_time" as SortField, label: "Date" },
@@ -316,7 +317,7 @@ export function FilterBar({ events, onFilterChange }: FilterBarProps) {
                 )}
               </button>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         <AnimatePresence>

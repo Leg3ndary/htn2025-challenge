@@ -8,9 +8,9 @@ import EventModal from "@/components/EventModal";
 
 // So that tailwind can actually compile the colours
 export const TEventColors = {
-  workshop: "bg-yellow-400/10 text-yellow-400",
-  activity: "bg-blue-400/10 text-blue-400",
-  tech_talk: "bg-green-400/10 text-green-400",
+  workshop: "bg-yellow-400/10 text-yellow-400 hover:border-yellow-400",
+  activity: "bg-blue-400/10 text-blue-400 hover:border-blue-400",
+  tech_talk: "bg-green-400/10 text-green-400 hover:border-green-400",
 };
 
 export const TEventLabels = {
@@ -63,7 +63,7 @@ export default function EventCard({
           setModalEvent(event);
           setIsModalOpen(true);
         }}
-        className="bg-[#1f1f1f] rounded-xl p-5 h-full min-h-64 flex flex-col border border-gray-800 hover:border-gray-700 transition-colors cursor-pointer"
+        className={`bg-[#1f1f1f] rounded-xl p-5 h-full min-h-64 flex flex-col border border-[#1f1f1f] ${TEventColors[event.event_type].split(" ")[2]} transition-colors cursor-pointer`}
       >
         <div className="space-y-2">
           <div className="flex items-center justify-between">

@@ -40,6 +40,8 @@ I know later I do have to do a writeup so here I'll track some thoughts as I go 
 - On second thought users should also be able to directly filter by some categories and permissions
 - I should also add a reset button just in case users get lost and just wanna see every event in default order again (start time).
 - Looking at the final inspiration things I think I could also just shove the filter stuff into localStorage
+5. Todays technically my final day so before I get started on the final stuff I did some quick touchups
+
 
 ## Requirements
 
