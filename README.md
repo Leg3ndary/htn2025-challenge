@@ -2,7 +2,7 @@
 
 This is my submission for the 2025 Hack the North FrontEnd Challenge.
 
-My writeup is in [WriteUp.md](https://github.com/htn2025-challenge/WriteUp.md)
+My writeup is in [WriteUp.md]([https://github.com/htn2025-challenge/WriteUp.md](https://github.com/Leg3ndary/htn2025-challenge/blob/main/WriteUp.md))
 
 ## Installation
 
