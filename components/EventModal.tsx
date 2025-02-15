@@ -179,13 +179,24 @@ export default function EventModal({
                             {relatedEvent.name}
                           </span>
                         </div>
-                        <span
-                          className={`text-sm font-medium px-3 mr-3 flex-shrink-0 py-1 rounded-lg w-fit ${
-                            TEventColors[relatedEvent.event_type]
-                          }`}
-                        >
-                          {TEventLabels[relatedEvent.event_type]}
-                        </span>
+                        <div className="flex items-center gap-2 mr-3">
+                          <span
+                            className={`text-sm font-medium px-3 flex-shrink-0 py-1 rounded-lg w-fit ${
+                              relatedEvent.permission === "private" 
+                              ? "bg-purple-400/10 text-purple-400"
+                              : "bg-blue-400/10 text-blue-400"
+                            }`}
+                          >
+                            {relatedEvent.permission === "private" ? "Private" : "Public"}
+                          </span>
+                          <span
+                            className={`text-sm font-medium px-3 flex-shrink-0 py-1 rounded-lg w-fit ${
+                              TEventColors[relatedEvent.event_type]
+                            }`}
+                          >
+                            {TEventLabels[relatedEvent.event_type]}
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
