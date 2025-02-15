@@ -43,6 +43,7 @@ I know later I do have to do a writeup so here I'll track some thoughts as I go 
 5. Todays technically my final day so before I get started on the final stuff I did some quick touchups
 - Starting with authentication I added a really simple sign in sign out button that just quickly checks if the input matches and sets a field in local storage...
 - I probably should useContext for the auth stuff but I'm running out of time so I'll just pass it in as props...
+- I added a private/public label for related events to help differentiate them
 
 
 
@@ -52,11 +53,11 @@ The functionality of the app is split into multiple portions:
 
 1. DONE Display the information for all events provided when visiting the app
 2. DONE Sort these events in order by start_time
-3. Hide the ability to view `private` events behind a login screen. Specifically, users who haven't logged in can only view `public` events, while logged in users can view both `public` and `private` events
-    - Login details can be hard-coded, please use the following credentials if you are hard-coding the login:
+3. DONE Hide the ability to view `private` events behind a login screen. Specifically, users who haven't logged in can only view `public` events, while logged in users can view both `public` and `private` events
+    - DONE Login details can be hard-coded, please use the following credentials if you are hard-coding the login:
         - Username: `hacker`
         - Password: `htn2025`
-4. Provide a way to link to and view each related event
+4. DONE     Provide a way to link to and view each related event
 
 > If you feel you are strapped for time, it's okay to choose not to implement the latter portions of the challenge. We would rather see a partially implemented but well-crafted submission. However, do note that a complete submission should have all the functionality listed above.
 > 

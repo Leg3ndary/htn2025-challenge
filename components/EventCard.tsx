@@ -1,10 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Clock, Users, Link, ExternalLink } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  Users,
+  Link,
+  ExternalLink,
+  Share2,
+} from "lucide-react";
 import { TEvent } from "@/types";
 import EventModal from "@/components/EventModal";
+import { useRouter, useSearchParams } from "next/navigation";
+import Toast from "@/components/Toast";
 
 // So that tailwind can actually compile the colours
 export const TEventColors = {
@@ -19,7 +28,6 @@ export const TEventLabels = {
   tech_talk: "Tech Talk",
 };
 
-// I don't usually name my things oddly but just so you know I'm human!
 function FunnyDivider() {
   return <div className="bg-gray-400 h-[1px] rounded-full w-full my-3" />;
 }
@@ -33,8 +41,39 @@ export default function EventCard({
   allEvents: TEvent[];
   isAuthenticated: boolean;
 }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalEvent, setModalEvent] = useState(event);
+  const [toast, setToast] = useState<{
+    message: string;
+    isVisible: boolean;
+    type: "success" | "error";
+  }>({
+    message: "",
+    isVisible: false,
+    type: "success",
+  });
+
+  useEffect(() => {
+    const eventId = searchParams.get("event");
+    if (eventId && Number(eventId) === event.id) {
+      if (!isAuthenticated && event.permission == "private") {
+        showToast("Please log in to view private event details", "error");
+        return;
+      } else {
+        setIsModalOpen(true);
+      }
+    }
+  }, [searchParams, event.id]);
+
+  const showToast = (message: string, type: "success" | "error") => {
+    setToast({ message, isVisible: true, type });
+  };
+
+  const hideToast = () => {
+    setToast((prev) => ({ ...prev, isVisible: false }));
+  };
 
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
@@ -53,7 +92,75 @@ export default function EventCard({
     setTimeout(() => {
       setModalEvent(newEvent);
       setIsModalOpen(true);
-    }, 70); // So that its fast but not too fast
+    }, 70);
+  };
+
+  const handleCardClick = () => {
+    if (!isAuthenticated && event.permission === "private") {
+      showToast("Please log in to view private event details", "error");
+      return;
+    }
+
+    setModalEvent(event);
+    setIsModalOpen(true);
+    router.push(`?event=${event.id}`, { scroll: false });
+  };
+
+  const handlePrivateLink = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    if (!isAuthenticated) {
+      showToast("Please log in to view private event details", "error");
+      return;
+    }
+    window.open(event.private_url, "_blank");
+  };
+
+  useEffect(() => {
+    const eventId = searchParams.get("event");
+    if (eventId && Number(eventId) === event.id) {
+      if (!isAuthenticated && event.permission === "private") {
+        showToast("Please log in to view private event details", "success");
+        setTimeout(() => {
+          router.push("/", { scroll: false });
+        }, 100);
+        // Not working, unfortunately I'm running out of time so I'll just leave it.
+      } else {
+        setIsModalOpen(true);
+      }
+    }
+  }, [searchParams, event.id]);
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    router.push("/", { scroll: false });
+  };
+
+  const handleShare = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const shareUrl = `${window.location.origin}?event=${event.id}`;
+
+    if (navigator.share) {
+      navigator
+        .share({
+          title: event.name,
+          text: event.description,
+          url: shareUrl,
+        })
+        .catch((error) => {
+          console.log("Error sharing:", error);
+          copyToClipboard(shareUrl);
+        });
+    } else {
+      copyToClipboard(shareUrl);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => showToast("Share link copied to clipboard!", "success"))
+      .catch((err) => console.error("Failed to copy:", err));
   };
 
   return (
@@ -61,10 +168,7 @@ export default function EventCard({
       <motion.div
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        onClick={() => {
-          setModalEvent(event);
-          setIsModalOpen(true);
-        }}
+        onClick={handleCardClick}
         className={`bg-[#1f1f1f] rounded-xl p-5 h-full min-h-64 flex flex-col border border-[#1f1f1f] ${
           TEventColors[event.event_type].split(" ")[2]
         } transition-colors cursor-pointer`}
@@ -90,7 +194,7 @@ export default function EventCard({
 
         <div className="mt-auto space-y-2">
           <FunnyDivider />
-          <div className="flex justify-between ">
+          <div className="flex justify-between">
             {event.speakers.length > 0 && (
               <div className="flex items-center gap-2 text-gray-300">
                 <Users size={16} className="shrink-0" />
@@ -99,7 +203,14 @@ export default function EventCard({
                 </p>
               </div>
             )}
-            <div className="flex gap-3 ml-auto">
+            <div className="flex gap-2 ml-auto">
+              <button
+                onClick={handleShare}
+                className="flex items-center gap-1 text-sm text-gray-300 hover:text-gray-200 transition-colors"
+              >
+                <Share2 size={16} />
+                Share
+              </button>
               {event.public_url && (
                 <a
                   href={event.public_url}
@@ -112,16 +223,14 @@ export default function EventCard({
                   Public
                 </a>
               )}
-              {isAuthenticated && event.private_url && (
-                <a
-                  href={event.private_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+              {isAuthenticated && (
+                <button
+                  onClick={handlePrivateLink}
                   className="flex items-center gap-1 text-sm text-purple-400 hover:text-purple-300 transition-colors"
                 >
                   <ExternalLink size={16} />
-                  Private Link
-                </a>
+                  Private
+                </button>
               )}
             </div>
           </div>
@@ -147,10 +256,17 @@ export default function EventCard({
       <EventModal
         event={modalEvent}
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleModalClose}
         allEvents={allEvents}
         onEventChange={handleEventChange}
         isAuthenticated={isAuthenticated}
+      />
+
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.isVisible}
+        onHide={hideToast}
       />
     </>
   );

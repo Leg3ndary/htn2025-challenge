@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Calendar, Clock, Users, Link, ExternalLink } from "lucide-react";
+import { X, Calendar, Clock, Users, Link, ExternalLink, Share2 } from "lucide-react";
 import { TEvent } from "@/types";
 import { TEventColors, TEventLabels } from "./EventCard";
 
@@ -19,7 +19,7 @@ export default function EventModal({
   onClose,
   allEvents,
   onEventChange,
-  isAuthenticated
+  isAuthenticated,
 }: EventModalProps) {
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
@@ -60,6 +60,35 @@ export default function EventModal({
 
   const handleRelatedEventClick = (relatedEvent: TEvent) => {
     onEventChange(relatedEvent);
+  };
+
+  const handleShare = () => {
+    const shareUrl = `${window.location.origin}?event=${event.id}`;
+
+    if (navigator.share) {
+      navigator
+        .share({
+          title: event.name,
+          text: event.description,
+          url: shareUrl,
+        })
+        .catch((error) => {
+          console.log("Error sharing:", error);
+          copyToClipboard(shareUrl);
+        });
+    } else {
+      copyToClipboard(shareUrl);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        // You might want to add a toast notification here
+        console.log("Share link copied to clipboard!");
+      })
+      .catch((err) => console.error("Failed to copy:", err));
   };
 
   return (
@@ -114,7 +143,14 @@ export default function EventModal({
                     </p>
                   </div>
                 )}
-                <div className="flex gap-4">
+                <div className="flex gap-4 ml-auto">
+                  <button
+                    onClick={handleShare}
+                    className="flex items-center gap-1 text-sm text-gray-300 hover:text-gray-200 transition-colors"
+                  >
+                    <Share2 size={16} />
+                    Share
+                  </button>
                   {event.public_url && (
                     <a
                       href={event.public_url}
@@ -126,17 +162,20 @@ export default function EventModal({
                       Public Link
                     </a>
                   )}
-                  <a
-                    href={event.private_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-sm text-purple-400 hover:text-purple-300 transition-colors"
-                  >
-                    <ExternalLink size={16} />
-                    Private Link
-                  </a>
+                  {isAuthenticated && (
+                    <a
+                      href={event.private_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-sm text-purple-400 hover:text-purple-300 transition-colors"
+                    >
+                      <ExternalLink size={16} />
+                      Private
+                    </a>
+                  )}
                 </div>
               </div>
+
               <div className="flex justify-between items-center gap-3 text-gray-300">
                 <div className="flex items-center gap-2">
                   <Calendar size={16} className="shrink-0" />
@@ -182,12 +221,14 @@ export default function EventModal({
                         <div className="flex items-center gap-2 mr-3">
                           <span
                             className={`text-sm font-medium px-3 flex-shrink-0 py-1 rounded-lg w-fit ${
-                              relatedEvent.permission === "private" 
-                              ? "bg-purple-400/10 text-purple-400"
-                              : "bg-blue-400/10 text-blue-400"
+                              relatedEvent.permission === "private"
+                                ? "bg-purple-400/10 text-purple-400"
+                                : "bg-blue-400/10 text-blue-400"
                             }`}
                           >
-                            {relatedEvent.permission === "private" ? "Private" : "Public"}
+                            {relatedEvent.permission === "private"
+                              ? "Private"
+                              : "Public"}
                           </span>
                           <span
                             className={`text-sm font-medium px-3 flex-shrink-0 py-1 rounded-lg w-fit ${
