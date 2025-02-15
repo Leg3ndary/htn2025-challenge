@@ -2,6 +2,8 @@
 
 This is my submission for the 2025 Hack the North FrontEnd Challenge.
 
+My writeup is in [WriteUp.md](https://github.com/htn2025-challenge/WriteUp.md)
+
 ## Installation
 
 As with any standard Next.js project, you can simply clone the repo, install packages, and run the project like so:
